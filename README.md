@@ -7,20 +7,13 @@ Generate an HTML career-timeline report from an HR-history spreadsheet export. T
 Requires Python 3.10+.
 
 ```
-pip install pandas openpyxl plotly
+pip install -r requirements.txt
 ```
 
-For legacy `.xls` (OLE2) inputs, also install `xlrd`:
+This installs:
 
-```
-pip install xlrd
-```
-
-On Windows, for HR exports that use an unusual OLE2 encapsulation (some corporate HR systems produce these), install `pywin32` to enable an Excel COM fallback:
-
-```
-pip install pywin32
-```
+- `pandas`, `openpyxl`, `plotly` (required)
+- `xlrd` on non-Windows, `pywin32` on Windows (for legacy `.xls` and unusual OLE2 workbooks some HR systems produce)
 
 ## Usage
 
