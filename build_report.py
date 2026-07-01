@@ -64,12 +64,23 @@ def _read_via_excel_com(path: Path, prior_errors: list) -> pd.DataFrame:
             + "  pip install pywin32"
         )
 
+    print(
+        f"Note: '{path.name}' is an OLE2-encapsulated workbook that pandas cannot parse directly.\n"
+        f"      Falling back to Excel COM to convert it. This can take 20-40 seconds...",
+        file=sys.stderr,
+        flush=True,
+    )
+
     tmp_csv = path.with_suffix(".converted.csv")
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = False
     excel.DisplayAlerts = False
     try:
-        wb = excel.Workbooks.Open(str(path))
+        excel.AutomationSecurity = 1  # msoAutomationSecurityLow: suppress MOTW/Protected View prompts
+    except Exception:
+        pass
+    try:
+        wb = excel.Workbooks.Open(str(path), UpdateLinks=0, ReadOnly=True)
         wb.Sheets(1).SaveAs(str(tmp_csv), 6)  # 6 = xlCSV
         wb.Close(False)
     finally:
@@ -79,6 +90,7 @@ def _read_via_excel_com(path: Path, prior_errors: list) -> pd.DataFrame:
         tmp_csv.unlink()
     except OSError:
         pass
+    print("      Done reading via Excel COM.", file=sys.stderr, flush=True)
     return df
 
 
