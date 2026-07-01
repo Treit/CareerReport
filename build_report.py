@@ -280,9 +280,9 @@ function makeGantt(divId, data, colorBase) {{
     margin: {{ l: 160, r: 30, t: 20, b: 40 }},
     xaxis: {{ type: 'date', gridcolor: '#eaeef2', fixedrange: true }},
     yaxis: {{ automargin: true, tickfont: {{ size: 12 }}, fixedrange: true }},
-    plot_bgcolor: 'white', paper_bgcolor: 'white', hovermode: false
+    plot_bgcolor: 'white', paper_bgcolor: 'white', hovermode: 'closest'
   }};
-  Plotly.newPlot(divId, traces, layout, {{staticPlot: true, responsive: true}});
+  Plotly.newPlot(divId, traces, layout, {{displayModeBar: false, responsive: true}});
 }}
 
 makeGantt('mgr-chart', mgrData, '#0969da');
